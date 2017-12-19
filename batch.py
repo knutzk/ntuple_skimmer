@@ -1,4 +1,4 @@
-import glob
+from glob import glob
 import subprocess
 import sys
 import os
@@ -49,7 +49,7 @@ if __name__ == "__main__":
             if not os.path.isdir(path):
                 print "Input file path does not exist"
                 sys.exit(-1)
-            files.extend(glob.glob("%s/%s" % (path, pattern)))
+            files.extend(glob("%s/%s" % (path, pattern)))
         print "Found %s files matching pattern %s" % (len(files), pattern)
 
 
