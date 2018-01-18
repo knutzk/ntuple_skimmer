@@ -42,6 +42,18 @@ search_patterns.append("410389.ttgamma_nonallhadronic.p3152*")
 search_patterns.append("410501.ttbar_nonallhad_P8.p3138*")
 
 
+def lookup_files(paths, patterns):
+    dictionary = dict()
+    for pattern in patterns:
+        for path in paths:
+            if not os.path.isdir(path):
+                print "Input file path does not exist"
+                sys.exit(-1)
+            files = glob("%s/%s" % (path, pattern))
+            dictionary["%s/%s" % (path, pattern)] = files
+    return dictionary
+
+
 if __name__ == "__main__":
     files = []
     for pattern in search_patterns:
