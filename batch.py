@@ -2,6 +2,7 @@ from glob import glob
 import subprocess
 import sys
 import os
+import time
 
 input_path = os.environ['HOME'] + "/ttgamma/group-eos/v010_production/"
 output_path = os.environ['HOME'] + "/eos/ttgamma_ntuples/v010_production/"
@@ -54,6 +55,26 @@ def lookup_files(paths, patterns):
     return dictionary
 
 
+class ProcessManager():
+    def __init__(self, limit):
+        self.processes = []
+        self.proc_limit = limit
+
+    def addProcess(self, command):
+        self.processes.append(subprocess.Popen([command], shell=True, stdin=None, stdout=None, stderr=None))
+
+    def waitTillReady(self):
+        while True:
+            for p in self.processes:
+                if not p.poll() == None:
+                    self.processes.remove(p)
+            if len(self.processes) > self.proc_limit:
+                time.sleep(1)
+            else:
+                break
+        return
+
+
 if __name__ == "__main__":
     # Store all files matching a certain combination of search pattern and
     # search path into a look-up dictionary.
@@ -68,25 +89,14 @@ if __name__ == "__main__":
 
     # Go through all files, process a maximum of 10 files at a time. Otherwise,
     # wait for a process to finish first.
-    import time
-    processes = []
+    proc_manager = ProcessManager(10)
     file_counter = 0
     for f in files:
-        ready_to_iterate = False
-        while not ready_to_iterate:
-            for p in processes:
-                if not p.poll() == None:
-                    processes.remove(p)
-            if len(processes) > 10:
-                # print "Waiting ..."
-                time.sleep(1)
-            else:
-                ready_to_iterate = True
-
+        proc_manager.waitTillReady()
         command = "./skimmer %s %s" % (f, f.replace(input_path, output_path))
         file_counter += 1
         print "Processing file %s of %s: %s" % (file_counter, len(files), f)
-        processes.append(subprocess.Popen([command], shell=True, stdin=None, stdout=None, stderr=None))
+        proc_manager.addProcess(command)
 
 
    # # Running this code instead can apparently crash lxplus machines. :-)
