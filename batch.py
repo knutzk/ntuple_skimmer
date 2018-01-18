@@ -60,6 +60,7 @@ if __name__ == "__main__":
     # wait for a process to finish first.
     import time
     processes = []
+    file_counter = 0
     for f in files:
         ready_to_iterate = False
         while not ready_to_iterate:
@@ -73,7 +74,8 @@ if __name__ == "__main__":
                 ready_to_iterate = True
 
         command = "./skimmer %s %s" % (f, f.replace(input_path, output_path))
-        print command
+        file_counter += 1
+        print "Processing file %s of %s: %s" % (file_counter, len(files), f)
         processes.append(subprocess.Popen([command], shell=True, stdin=None, stdout=None, stderr=None))
 
 
