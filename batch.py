@@ -55,18 +55,16 @@ def lookup_files(paths, patterns):
 
 
 if __name__ == "__main__":
-    files = []
-    for pattern in search_patterns:
-        find_count = 0
-        for path in search_paths:
-            if not os.path.isdir(path):
-                print "Input file path does not exist"
-                sys.exit(-1)
-            matching_files = glob("%s/%s" % (path, pattern))
-            files.extend(matching_files)
-            find_count += len(matching_files)
-        print "Found %s files matching pattern %s" % (find_count, pattern)
+    # Store all files matching a certain combination of search pattern and
+    # search path into a look-up dictionary.
+    dictionary = lookup_files(search_paths, search_patterns)
 
+    # Compile a list of all files to process.
+    files = []
+    for pattern in dictionary:
+        if len(dictionary[pattern]) == 0: continue
+        print "Found %s files matching %s" % (len(dictionary[pattern]), pattern)
+        files.extend(dictionary[pattern])
 
     # Go through all files, process a maximum of 10 files at a time. Otherwise,
     # wait for a process to finish first.
