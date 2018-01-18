@@ -89,7 +89,7 @@ namespace {
       // If "copy_weight_trees" is FALSE, we don't want all the
       // systematics garbage. Only collect trees with the keyword
       // "nominal".
-      if (!copy_weight_trees && is_nominal(*obj)) continue;
+      if (!copy_weight_trees && !is_nominal(*obj)) continue;
       trees.push_back(obj->GetName());
     }
     return trees;
@@ -104,7 +104,7 @@ namespace {
   }
 
   bool is_nominal(const TObject& obj) {
-    return std::string(obj.GetName()).find("nominal") == std::string::npos;
+    return std::string(obj.GetName()).find("nominal") != std::string::npos;
   }
 
   std::string useMessage(const std::string& prog_name) {
