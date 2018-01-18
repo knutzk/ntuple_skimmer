@@ -126,3 +126,8 @@ if __name__ == "__main__":
 
     # Wait for all processes to finish before continuing.
     proc_manager.finalise()
+
+    # Now remove the files that were added in the step before.
+    for pattern in dictionary:
+         for f in dictionary[pattern]:
+             os.remove(f.replace(input_path, output_path))
