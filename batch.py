@@ -97,20 +97,3 @@ if __name__ == "__main__":
         file_counter += 1
         print "Processing file %s of %s: %s" % (file_counter, len(files), f)
         proc_manager.addProcess(command)
-
-
-   # # Running this code instead can apparently crash lxplus machines. :-)
-   #  for pattern in search_patterns:
-   #      files = []
-   #      for path in search_paths:
-   #          if not os.path.isdir(path):
-   #              print "Input file path does not exist"
-   #              sys.exit(-1)
-   #          files.extend(glob.glob("%s/%s" % (path, pattern)))
-   #      print "Found %s files matching pattern %s" % (len(files), pattern)
-
-   #      processes = []
-   #      for f in files:
-   #          command = "./skimmer %s %s" % (f, f.replace(input_path, output_path))
-   #          processes.append(subprocess.Popen([command], shell=True, stdin=None, stdout=None, stderr=None))
-   #      [p.communicate() for p in processes]
