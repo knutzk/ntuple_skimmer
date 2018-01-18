@@ -61,7 +61,8 @@ class ProcessManager():
         self.proc_limit = limit
 
     def addProcess(self, command):
-        self.processes.append(subprocess.Popen([command], shell=True, stdin=None, stdout=None, stderr=None))
+        with open(os.devnull, 'w') as fp:
+            self.processes.append(subprocess.Popen([command], shell=True, stdout=fp))
 
     def removeFinishedProcs(self):
         for p in self.processes:
