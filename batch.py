@@ -63,11 +63,14 @@ class ProcessManager():
     def addProcess(self, command):
         self.processes.append(subprocess.Popen([command], shell=True, stdin=None, stdout=None, stderr=None))
 
+    def removeFinishedProcs(self):
+        for p in self.processes:
+            if not p.poll() == None:
+                self.processes.remove(p)
+
     def waitTillReady(self):
         while True:
-            for p in self.processes:
-                if not p.poll() == None:
-                    self.processes.remove(p)
+            self.removeFinishedProcs()
             if len(self.processes) > self.proc_limit:
                 time.sleep(1)
             else:
@@ -76,9 +79,7 @@ class ProcessManager():
 
     def finalise(self):
         while True:
-            for p in self.processes:
-                if not p.poll() == None:
-                    self.processes.remove(p)
+            self.removeFinishedProcs()
             if len(self.processes) > 0:
                 time.sleep(1)
             else:
