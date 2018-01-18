@@ -3,7 +3,7 @@ import subprocess
 import sys
 import os
 
-input_path = os.environ['HOME'] + "/ttgamma/eos/v010_production/"
+input_path = os.environ['HOME'] + "/ttgamma/group-eos/v010_production/"
 output_path = os.environ['HOME'] + "/eos/ttgamma_ntuples/v010_production/"
 
 search_paths = []
