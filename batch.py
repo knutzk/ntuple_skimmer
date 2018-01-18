@@ -74,6 +74,17 @@ class ProcessManager():
                 break
         return
 
+    def finalise(self):
+        while True:
+            for p in self.processes:
+                if not p.poll() == None:
+                    self.processes.remove(p)
+            if len(self.processes) > 0:
+                time.sleep(1)
+            else:
+                break
+        return
+
 
 if __name__ == "__main__":
     # Store all files matching a certain combination of search pattern and
