@@ -111,6 +111,9 @@ if __name__ == "__main__":
         print "Processing file %s of %s: %s" % (file_counter, len(files), f)
         proc_manager.addProcess(command)
 
+    # Wait for all processes to finish before continuing.
+    proc_manager.finalise()
+
     # Go through all search patterns again and add the processed files to one
     # large root file. Don't do more than 3 hadd commands simultaneously.
     proc_manager = ProcessManager(3)
