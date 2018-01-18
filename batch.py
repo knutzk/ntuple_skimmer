@@ -45,12 +45,15 @@ search_patterns.append("410501.ttbar_nonallhad_P8.p3138*")
 if __name__ == "__main__":
     files = []
     for pattern in search_patterns:
+        find_count = 0
         for path in search_paths:
             if not os.path.isdir(path):
                 print "Input file path does not exist"
                 sys.exit(-1)
-            files.extend(glob("%s/%s" % (path, pattern)))
-        print "Found %s files matching pattern %s" % (len(files), pattern)
+            matching_files = glob("%s/%s" % (path, pattern))
+            files.extend(matching_files)
+            find_count += len(matching_files)
+        print "Found %s files matching pattern %s" % (find_count, pattern)
 
 
     # Go through all files, process a maximum of 10 files at a time. Otherwise,
