@@ -122,7 +122,7 @@ if __name__ == "__main__":
         corr_file_list = [f.replace(input_path, output_path) for f in dictionary[pattern]]
 
         proc_manager.waitTillReady()
-        target_file = corr_file_list[0].replace("001.root", "root")
+        target_file = corr_file_list[0].replace(".root", ".KNUT.root")
         print "Creating file %s" % target_file
         command = "hadd -f %s" % target_file
         for f in corr_file_list:
