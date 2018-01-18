@@ -108,3 +108,21 @@ if __name__ == "__main__":
         file_counter += 1
         print "Processing file %s of %s: %s" % (file_counter, len(files), f)
         proc_manager.addProcess(command)
+
+    # Go through all search patterns again and add the processed files to one
+    # large root file. Don't do more than 3 hadd commands simultaneously.
+    proc_manager = ProcessManager(3)
+    for pattern in dictionary:
+        if len(dictionary[pattern]) == 0: continue
+        corr_file_list = [f.replace(input_path, output_path) for f in dictionary[pattern]]
+
+        proc_manager.waitTillReady()
+        target_file = corr_file_list[0].replace("001.root", "root")
+        print "Creating file %s" % target_file
+        command = "hadd -f %s" % target_file
+        for f in corr_file_list:
+            command += " %s" % f
+        proc_manager.addProcess(command)
+
+    # Wait for all processes to finish before continuing.
+    proc_manager.finalise()
