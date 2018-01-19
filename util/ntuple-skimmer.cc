@@ -12,7 +12,7 @@
 bool copy_weight_trees{false};
 
 //! Cut strings for (1) the hadron-fake CR, (2) the prompt CR.
-std::string hfake_cuts{"( selph_index1 >=0 && ( ((ejets_2015 || ejets_2016) && abs(ph_mgammalept[selph_index1] - 91188) > 5000) || (mujets_2015 || mujets_2016) ) && event_ngoodphotons==1 &&  event_njets >= 4 && event_nbjets77 >= 1 && ph_drlept[selph_index1] > 1.0 && ph_ptcone20[selph_index1] > 3000. )"};
+std::string hfake_cuts{"( selph_index1 >=0 && ( ((ejets_2015 || ejets_2016) && abs(ph_mgammalept[selph_index1] - 91188) > 5000) || (mujets_2015 || mujets_2016) ) && event_ngoodphotons==1 && event_njets >= 4 && event_nbjets77 >= 1 && ph_drlept[selph_index1] > 1.0 )"};
 std::string prompt_cuts{"( selph_index1 >=0 && (ee_2015 || ee_2016 || emu_2015 || emu_2016 || mumu_2015 || mumu_2016) && event_ngoodphotons==1 && ph_drlept[selph_index1] > 1.0 && ph_isoFCT[selph_index1] && (event_mll > 60000 && event_mll < 100000) )"};
 
 //! The final cut string to be applied for skimming.
