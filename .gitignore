@@ -1,0 +1,6 @@
+# Ignore c++ executables and object files
+*.exe
+*.o
+
+# Ignore precompiled python
+*.pyc
