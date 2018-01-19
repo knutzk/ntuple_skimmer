@@ -2,7 +2,7 @@ CC := g++
 RM := rm -f
 
 SRC := util/ntuple-skimmer.cc
-TARGET := skimmer
+TARGET := ntuple-skimmer.exe
 
 CFLAGS := `root-config --cflags`
 LIBS := `root-config --libs`

@@ -106,7 +106,7 @@ if __name__ == "__main__":
     file_counter = 0
     for f in files:
         proc_manager.waitTillReady()
-        command = "./skimmer %s %s" % (f, f.replace(input_path, output_path))
+        command = "./ntuple-skimmer.exe %s %s" % (f, f.replace(input_path, output_path))
         file_counter += 1
         print "Processing file %s of %s: %s" % (file_counter, len(files), f)
         proc_manager.addProcess(command)
