@@ -7,23 +7,24 @@ Code to scan through a list of ROOT files, and skim trees with given cut strings
 
 The repository currently contains two main files:
 
-- `skim_file.cc`, which is a c++ skimming script for ntuples. When compiled, it
+- `ntuple-skimmer.cc`, which is a c++ skimming script for ntuples. When compiled, it
   takes an input file, and outputs the skimmed version of that file.
 
-- `batch.py`, a python script to parse a given list of directories for a given
-  list of file patterns. The script creates a list of files matching both
-  criteria and then calls the skimmer on it.
+- `batch.py`, a python script that automatises skimming of a collection of files. It
+  parses a given list of directories for a given list of file patterns. A list of files
+  matching both criteria is compiled and then the c++ skimmer is called on them.
+  Files belonging to the same pattern will then be merged using the `hadd` command.
 
 Compile the c++ script with:
 
 ```
-$ g++ -Wall `root-config --cflags --libs` skim_file.cc -o skimmer
+$ make
 ```
 
 Then the skimming can be executed via
 
 ```
-$ ./skimmer input.root output.root
+$ ./ntuple-skimmer.exe input.root output.root
 ```
 
 The current implementation of the ntuple skimmer applies two cut strings
@@ -32,4 +33,8 @@ strings correspond to the hadron fake and the prompt photon control regions.
 
 The batch python script looks for ntuples in the central ntuple directories, and
 then saves the skimmed ones into a private folder (while keeping the
-subdirectory structure).
+subdirectory structure). Call the batch script via
+
+```
+$ python batch.py
+```
