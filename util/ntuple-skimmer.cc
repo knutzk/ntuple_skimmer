@@ -32,12 +32,6 @@ namespace {
   //! Get tree 'name' from a TFile object.
   TTree* get_tree(TFile* file, const std::string& name);
 
-  //! Check whether object is a tree.
-  bool is_tree(const TObject& obj);
-
-  //! Check whether object name contains "nominal".
-  bool is_nominal(const TObject& obj);
-
   //! Show me how to use this program.
   std::string useMessage(const std::string& prog_name);
 }  // namespace
@@ -77,6 +71,16 @@ int main(int argc, char* argv[]) {
 
 
 namespace {
+  //! Check whether TObject is of type TTree.
+  bool is_tree(const TObject& obj) {
+    return obj.IsA()->InheritsFrom(TTree::Class());
+  }
+
+  //! Check whether TObject's name contains string 'nominal'.
+  bool is_nominal(const TObject& obj) {
+    return std::string(obj.GetName()).find("nominal") != std::string::npos;
+  }
+
   TreeList get_list_of_trees(const TFile& file) {
     TreeList trees;
     TIter nextkey(file.GetListOfKeys());
@@ -95,14 +99,6 @@ namespace {
 
   TTree* get_tree(TFile* file, const std::string& name) {
     return static_cast<TTree*>(file->Get(name.c_str()));
-  }
-
-  bool is_tree(const TObject& obj) {
-    return obj.IsA()->InheritsFrom(TTree::Class());
-  }
-
-  bool is_nominal(const TObject& obj) {
-    return std::string(obj.GetName()).find("nominal") != std::string::npos;
   }
 
   std::string useMessage(const std::string& prog_name) {
