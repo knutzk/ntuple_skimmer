@@ -29,6 +29,7 @@ namespace {
   //! Get a list of trees to be processed.
   TreeList get_list_of_trees(const TFile& file);
 
+  //! Get tree 'name' from a TFile object.
   TTree* get_tree(TFile* file, const std::string& name);
 
   //! Check whether object is a tree.
