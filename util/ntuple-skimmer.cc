@@ -55,13 +55,10 @@ int main(int argc, char* argv[]) {
   auto input_file = TFile::Open(argv[1], "READ");
   auto output_file = TFile::Open(argv[2], "RECREATE");
   if (!input_file || !output_file) return -1;
-  // std::cout << "Reading file " << argv[1] << std::endl;
 
   for (const auto& entry : get_list_of_trees(*input_file)) {
     auto tree = get_tree(input_file, entry);
     if (!tree) return -1;
-
-    // std::cout << "  Skimming tree " << tree->GetName() << std::endl;
     output_file->cd();
     tree->CopyTree(cut_string);
     delete tree;
