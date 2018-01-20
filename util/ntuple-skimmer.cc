@@ -27,10 +27,10 @@ namespace {
   using TreeList = std::vector<std::string>;
 
   //! Get a list of trees to be processed.
-  TreeList get_list_of_trees(const TFile& file);
+  TreeList getListOfTrees(const TFile& file);
 
   //! Get tree 'name' from a TFile object.
-  TTree* get_tree(TFile* file, const std::string& name);
+  TTree* getTree(TFile* file, const std::string& name);
 
   //! Show me how to use this program.
   std::string useMessage(const std::string& prog_name);
@@ -51,8 +51,8 @@ int main(int argc, char* argv[]) {
   auto output_file = TFile::Open(argv[2], "RECREATE");
   if (!input_file || !output_file) return -1;
 
-  for (const auto& entry : get_list_of_trees(*input_file)) {
-    auto tree = get_tree(input_file, entry);
+  for (const auto& entry : getListOfTrees(*input_file)) {
+    auto tree = getTree(input_file, entry);
     if (!tree) return -1;
     output_file->cd();
     tree->CopyTree(cut_string);
@@ -72,32 +72,32 @@ int main(int argc, char* argv[]) {
 
 namespace {
   //! Check whether TObject is of type TTree.
-  bool is_tree(const TObject& obj) {
+  bool isTree(const TObject& obj) {
     return obj.IsA()->InheritsFrom(TTree::Class());
   }
 
   //! Check whether TObject's name contains string 'nominal'.
-  bool is_nominal(const TObject& obj) {
+  bool isNominal(const TObject& obj) {
     return std::string(obj.GetName()).find("nominal") != std::string::npos;
   }
 
-  TreeList get_list_of_trees(const TFile& file) {
+  TreeList getListOfTrees(const TFile& file) {
     TreeList trees;
     TIter nextkey(file.GetListOfKeys());
     TKey *key = nullptr;
     while ((key = static_cast<TKey*>(nextkey()))) {
       TObject *obj = key->ReadObj();
-      if (!is_tree(*obj)) continue;
+      if (!isTree(*obj)) continue;
       // If "copy_weight_trees" is FALSE, we don't want all the
       // systematics garbage. Only collect trees with the keyword
       // "nominal".
-      if (!copy_weight_trees && !is_nominal(*obj)) continue;
+      if (!copy_weight_trees && !isNominal(*obj)) continue;
       trees.push_back(obj->GetName());
     }
     return trees;
   }
 
-  TTree* get_tree(TFile* file, const std::string& name) {
+  TTree* getTree(TFile* file, const std::string& name) {
     return static_cast<TTree*>(file->Get(name.c_str()));
   }
 
