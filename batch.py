@@ -93,6 +93,9 @@ if __name__ == "__main__":
     # search path into a look-up dictionary.
     dictionary = lookup_files(search_paths, search_patterns)
 
+    # ======================================================
+    # PART 1
+    # ======================================================
     # Compile a list of all files to process.
     files = []
     for pattern in dictionary:
@@ -114,6 +117,9 @@ if __name__ == "__main__":
     # Wait for all processes to finish before continuing.
     proc_manager.finalise()
 
+    # ======================================================
+    # PART 2
+    # ======================================================
     # Go through all search patterns again and add the processed files to one
     # large root file. Don't do more than 3 hadd commands simultaneously.
     proc_manager = ProcessManager(3)
