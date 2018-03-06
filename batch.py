@@ -4,8 +4,8 @@ import sys
 import os
 import time
 
-input_path = os.environ['HOME'] + "/ttgamma/group-eos/v010_production/"
-output_path = os.environ['HOME'] + "/eos/ttgamma_ntuples/v010_production/"
+input_path = "/eos/atlas/atlascerngroupdisk/phys-top/toproperties/ttgamma/v010_february18/"
+output_path = "/eos/user/k/kzoch/ttgamma_ntuples/v010_february18/"
 
 search_paths = []
 search_paths.append(input_path + "QE2/ejets")
