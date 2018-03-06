@@ -5,6 +5,7 @@
 #include "TTree.h"
 
 #include <iostream>
+#include <set>
 #include <sstream>
 #include <string>
 
@@ -25,12 +26,16 @@ TCut cut_string = std::string(hfake_cuts + " || " + prompt_cuts).c_str();
 
 namespace {
   using TreeList = std::vector<std::string>;
+  using BranchSet = std::set<std::string>;
 
   //! Get a list of trees to be processed.
   TreeList getListOfTrees(const TFile& file);
 
   //! Get tree 'name' from a TFile object.
   TTree* getTree(TFile* file, const std::string& name);
+
+  //! Remove unwanted branches from a tree.
+  void activateBranches(TTree* tree, const BranchSet& branches);
 
   //! Show me how to use this program.
   std::string useMessage(const std::string& prog_name);
@@ -55,6 +60,26 @@ int main(int argc, char* argv[]) {
     auto tree = getTree(input_file, entry);
     if (!tree) return -1;
     output_file->cd();
+
+    BranchSet branches{};
+    // Branches necessary for the event selection.
+    branches.insert("ee*");
+    branches.insert("ejets*");
+    branches.insert("emu*");
+    branches.insert("event_mll");
+    branches.insert("event_nbjets77");
+    branches.insert("event_ngoodphotons");
+    branches.insert("event_njets");
+    branches.insert("mujets*");
+    branches.insert("mumu*");
+    branches.insert("ph_drlept");
+    branches.insert("ph_isoFCT");
+    branches.insert("ph_mgammalept");
+    branches.insert("ph_ptcone20");
+    branches.insert("selph_index1");
+
+    activateBranches(tree, branches);
+
     tree->CopyTree(cut_string);
     delete tree;
   }
@@ -99,6 +124,13 @@ namespace {
 
   TTree* getTree(TFile* file, const std::string& name) {
     return static_cast<TTree*>(file->Get(name.c_str()));
+  }
+
+  void activateBranches(TTree* tree, const BranchSet& branches) {
+    tree->SetBranchStatus("*", 0);
+    for (const auto& branch : branches) {
+      tree->SetBranchStatus(branch.c_str(), 1);
+    }
   }
 
   std::string useMessage(const std::string& prog_name) {
