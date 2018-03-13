@@ -35,7 +35,7 @@ namespace {
   TTree* getTree(TFile* file, const std::string& name);
 
   //! Remove unwanted branches from a tree.
-  void activateBranches(TTree* tree, const BranchSet& branches);
+  void deactivateBranches(TTree* tree);
 
   //! Show me how to use this program.
   std::string useMessage(const std::string& prog_name);
@@ -61,24 +61,7 @@ int main(int argc, char* argv[]) {
     if (!tree) return -1;
     output_file->cd();
 
-    BranchSet branches{};
-    // Branches necessary for the event selection.
-    branches.insert("ee*");
-    branches.insert("ejets*");
-    branches.insert("emu*");
-    branches.insert("event_mll");
-    branches.insert("event_nbjets77");
-    branches.insert("event_ngoodphotons");
-    branches.insert("event_njets");
-    branches.insert("mujets*");
-    branches.insert("mumu*");
-    branches.insert("ph_drlept");
-    branches.insert("ph_isoFCT");
-    branches.insert("ph_mgammalept");
-    branches.insert("ph_ptcone20");
-    branches.insert("selph_index1");
-
-    activateBranches(tree, branches);
+    deactivateBranches(tree);
 
     tree->CopyTree(cut_string);
     delete tree;
@@ -126,11 +109,26 @@ namespace {
     return static_cast<TTree*>(file->Get(name.c_str()));
   }
 
-  void activateBranches(TTree* tree, const BranchSet& branches) {
-    tree->SetBranchStatus("*", 0);
-    for (const auto& branch : branches) {
-      tree->SetBranchStatus(branch.c_str(), 1);
-    }
+  void deactivateBranches(TTree* tree) {
+    // Remove all but necessary weights.
+    tree->SetBranchStatus("weight*", 0);
+    tree->SetBranchStatus("weight_mc", 1);
+    tree->SetBranchStatus("weight_pileup", 1);
+    tree->SetBranchStatus("weight_leptonSF", 1);
+    tree->SetBranchStatus("weight_jvt", 1);
+    tree->SetBranchStatus("weight_bTagSF_Continuous", 1);
+    tree->SetBranchStatus("weight_PPT*", 1);
+
+    // Remove all but the necessary branches for other particles.
+    tree->SetBranchStatus("jet_*", 0);
+    tree->SetBranchStatus("jet_pt", 1);
+    tree->SetBranchStatus("el_*", 0);
+    tree->SetBranchStatus("el_pt", 1);
+    tree->SetBranchStatus("el_eta", 1);
+    tree->SetBranchStatus("mu_*", 0);
+    tree->SetBranchStatus("mu_pt", 1);
+    tree->SetBranchStatus("mu_eta", 1);
+
   }
 
   std::string useMessage(const std::string& prog_name) {
